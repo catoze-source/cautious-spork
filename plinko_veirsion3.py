@@ -54,7 +54,7 @@ while balance > 1:
     print("\nPayouts:")
     print("".join(payout_line))
 
-    # 💰 CALCULATE WIN
+    # 
     win = PAYOUTS[ball_col]
     print("\nBall landed in slot:", ball_col)
     print("You won:", win * bet, "dollars!")
@@ -67,7 +67,7 @@ while balance > 1:
     if balance <= 0:
         print("\nYou have run out of money! Game over.")
         break
-    play_again = input("\nDo you want to play again? (yes/no): ").lower()
+    play_again = input("\nDo you wat to play again? (yes/no): ").lower()
     if play_again != "yes":
         print("You leave with:", balance, "dollars. Thanks for playing!")
         break
