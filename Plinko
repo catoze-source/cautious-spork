@@ -1,0 +1,86 @@
+import random  # Used to randomly move the ball left or right
+import time    # Used to slow down the animation
+
+# Game board size
+ROWS = 6
+COLUMNS = 7
+
+# Payout multipliers for each column 
+PAYOUTS = [0, 0.5, 1, 2, 1, 0.5, 0]
+
+# Ask the player how much money they start with
+balance = float(input("How much money are you betting today?: "))
+
+
+#Main game loop (runs until the player runs out of money)"""
+while balance > 0:
+    print("Balance:", balance)
+
+    # Ask the player how much they want to bet and if bet is valid 
+    bet = float(input("Enter your bet: "))
+    if bet <= 0 or bet > balance:
+        print("Invalid bet")
+        continue  # Restart the loop if the bet is invalid
+
+    # Start the ball in the middle column by using // function which works as division but only returns whole numbers
+    column = COLUMNS // 2
+
+    # Create an empty board filled with spaces
+    board = [[" " for i in range(COLUMNS)] for x in range(ROWS)]
+
+    
+    # Add peg pattern ("o") to the board except the bottom row
+    # Pegs appear in a checkerboard pattern
+    for rows in range(ROWS - 1):
+        for col in range(COLUMNS):
+            if (rows + col) % 2 == 0:
+                board[rows][col] = "o"
+
+    # Make ball fall down the rows 
+    for rows in range(ROWS - 1):
+
+        # Place the ball ("X") in the current position
+        board[rows][column] = "X"
+
+        # Print the board
+        for row in board:
+            print(" ".join(row))
+        print()
+
+        # Pause so the animation is visible
+        time.sleep(0.2)
+
+        # Reset the previous position back to peg or empty space
+        board[rows][column] = "o" if (rows + column) % 2 == 0 else " "
+
+        # Randomly move the ball left or right
+        column += random.choice([-1, 1])
+
+        # Prevent the ball from going outside the board
+        column = max(0, min(COLUMNS - 1, column))
+
+    # Final landing position is set to the bottom row
+    board[ROWS - 1][column] = "X"
+
+    # Print the final board
+    for row in board:
+        print(" ".join(row))
+    print()
+
+    # Determine payout based on the column landed in 
+    win_multiplier = PAYOUTS[column]
+
+    # Calculate winnings
+    winnings = bet * win_multiplier
+
+    # Update player balance
+    balance = balance - bet + winnings
+
+    # Show results
+    print(f"Landed in column {column}")
+    print(f"Multiplier: {win_multiplier}x")
+    print(f"Won: {winnings:.2f}")
+    print(f"New balance: {balance:.2f}")
+
+# Game ends when balance reaches 0
+print("You ran out of money")
