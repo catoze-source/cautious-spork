@@ -9,10 +9,11 @@ PAYOUTS = [0, 0.5, 1, 2, 1, 0.5, 0]
 
 def generate_board(rows, columns):
     """
-    Creates the initial game board grid with pins ('o') in a staggered pattern.
+    Creates the initial game board grid with pins ('o') in a stagered pattern.
     It does this by outting "o" where the sum of r and c are even. 
     list: A 2D list representing the game board.
     """
+    
     board = [[" " for _ in range(columns)] for _ in range(rows)]
     for r in range(rows - 1):
         for c in range(columns):
@@ -57,6 +58,7 @@ def animate_drop(board, start_column):
     Simulates the ball falling through the pins with a visual delay.
     Starts in in the middle and makes it move down
     """
+    
     column = start_column
     for r in range(ROWS - 1):
         board[r][column] = "X"
@@ -102,6 +104,7 @@ def update_balance(current_balance, bet, multiplier):
     Calculates the new balance after applying the win/loss multiplier.
 
     """
+    
     winnings = bet * multiplier
     return current_balance - bet + winnings
 
