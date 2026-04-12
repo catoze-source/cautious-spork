@@ -32,6 +32,22 @@ def print_board(board):
         print(" ".join(row))
     print()
 
+def next_drop(column):
+    """
+    This function randomely generates the next move of the plinko
+    """
+    
+    move = random.choice([-1,1])
+    column += move
+
+    # Stop the ball leaving the grid 
+    if column < 0:
+        column = 0
+    elif column > COLUMNS - 1:
+        column = COLUMNS - 1
+            
+    return column
+
     
 
 def calculate_drop(start_column, total_rows):
@@ -43,12 +59,7 @@ def calculate_drop(start_column, total_rows):
     
     column = start_column
     for _ in range(total_rows - 1):
-        column += random.choice([-1, 1])
-        if column < 0:
-            column = 0
-                # Stops the ball leaving the grid 
-        elif column > COLUMNS - 1:
-            column = COLUMNS - 1 
+        column = next_drop(column)
     return column
 
 
@@ -66,13 +77,7 @@ def animate_drop(board, start_column):
         time.sleep(0.2)
         
         board[r][column] = "o" if (r + column) % 2 == 0 else " " #Checks if the number is even again 
-        column += random.choice([-1, 1])
-        
-        # Stops the ball leaving the grid 
-        if column < 0:
-            column = 0
-        elif column > COLUMNS - 1:
-            column = COLUMNS - 1 
+        column = next_drop(column)
 
     board[ROWS - 1][column] = "X"
     print_board(board)
@@ -115,6 +120,10 @@ def update_balance(current_balance, bet, multiplier):
 if __name__ == "__main__":
     try:
         balance = float(input("How much money are you betting today?: "))
+
+        if balance < 0:
+            raise ValueError
+        
     except ValueError:
         print("Invalid input. Here is $100.")
         balance = 100.0
